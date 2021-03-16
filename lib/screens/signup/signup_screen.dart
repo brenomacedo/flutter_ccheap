@@ -1,9 +1,14 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/screens/signup/components/field_title.dart';
+import 'package:xlo_mobx/stores/signup_store.dart';
 
 class SignUpScreen extends StatelessWidget {
+
+  final signUpStore = SignUpStore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,12 +32,18 @@ class SignUpScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   FieldTitle(title: 'Apelido', subtitle: 'Como aparecerá em seus anúncios'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Exemplo: Breno Macêdo',
-                      isDense: true,
-                    ),
+                  Observer(
+                    builder: (_) {
+                      return TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Exemplo: Breno Macêdo',
+                          isDense: true,
+                          errorText: signUpStore.nameError
+                        ),
+                        onChanged: signUpStore.setName,
+                      );
+                    },
                   ),
                   SizedBox(height: 16),
                   FieldTitle(title: 'Email', subtitle: 'Enviaremos um e-mail de confirmação'),
