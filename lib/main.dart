@@ -33,7 +33,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: BaseScreen(),
       title: 'XLO',
-      debugShowCheckedModeBanner: false
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        scaffoldBackgroundColor: Colors.purple,
+        appBarTheme: AppBarTheme(
+          elevation: 0
+        ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.orange
+        )
+      ),
     );
   }
 }
