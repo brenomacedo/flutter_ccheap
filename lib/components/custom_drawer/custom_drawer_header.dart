@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xlo_mobx/screens/login/login_screen.dart';
+import 'package:xlo_mobx/screens/signup/signup_screen.dart';
 
 class CustomDrawerHeader extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class CustomDrawerHeader extends StatelessWidget {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => LoginScreen()
+            builder: (_) => SignUpScreen()
           )
         );
       },
