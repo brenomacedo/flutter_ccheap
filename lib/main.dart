@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/config/config.dart';
+import 'package:xlo_mobx/screens/base/base_screen.dart';
 
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeParse();
+  runApp(MyApp());
+}
+
+Future<void> initializeParse() async {
   await Parse().initialize(
     appId,
     serverUrl,
@@ -12,21 +18,13 @@ void main() async {
     autoSendSessionId: true,
     debug: true
   );
-
-  runApp(MyApp());
-
-  final category = ParseObject('Categories')
-    ..set('Title', 'Camisetas')..set('Position', 2);
-
-  final response = await category.save();
-  print(response.success);
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Container(),
+      home: BaseScreen(),
       title: 'XLO',
       debugShowCheckedModeBanner: false
     );
