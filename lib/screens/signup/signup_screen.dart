@@ -35,6 +35,7 @@ class SignUpScreen extends StatelessWidget {
                   Observer(
                     builder: (_) {
                       return TextField(
+                        enabled: !signUpStore.loading,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Exemplo: Breno Macêdo',
@@ -47,72 +48,102 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   FieldTitle(title: 'Email', subtitle: 'Enviaremos um e-mail de confirmação'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Exemplo: brenomacedo@gmail.com',
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                  ),
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !signUpStore.loading,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Exemplo: brenomacedo@gmail.com',
+                        isDense: true,
+                        errorText: signUpStore.emailError
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      onChanged: signUpStore.setEmail,
+                    );
+                  }),
                   SizedBox(height: 16),
                   FieldTitle(title: 'Celular', subtitle: 'Proteja sua conta'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Exemplo: (99) 99999-9999',
-                      isDense: true,
-                    ),
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter()
-                    ],
-                  ),
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !signUpStore.loading,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Exemplo: (99) 99999-9999',
+                        isDense: true,
+                        errorText: signUpStore.phoneError
+                      ),
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TelefoneInputFormatter()
+                      ],
+                      onChanged: signUpStore.setPhone,
+                    );
+                  }),
                   SizedBox(height: 16),
                   FieldTitle(title: 'Senha', subtitle: 'Use letras, números e caracteres especiais'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !signUpStore.loading,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
 
+                        ),
+                        hintText: 'Exemplo: SenhaSegura898511',
+                        isDense: true,
+                        errorText: signUpStore.pass1Error
                       ),
-                      hintText: 'Exemplo: SenhaSegura898511',
-                      isDense: true
-                    ),
-                    obscureText: true
-                  ),
+                      obscureText: true,
+                      onChanged: signUpStore.setPass1,
+                    );
+                  }),
                   SizedBox(height: 16),
                   FieldTitle(title: 'Confirmar a senha', subtitle: 'Repita a senha'),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
+                  Observer(builder: (_) {
+                    return TextField(
+                      enabled: !signUpStore.loading,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
 
+                        ),
+                        hintText: 'Exemplo: SenhaSegura898511',
+                        isDense: true,
+                        errorText: signUpStore.pass2Error
                       ),
-                      hintText: 'Exemplo: SenhaSegura898511',
-                      isDense: true
-                    ),
-                    obscureText: true
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20, bottom: 12),
-                    height: 40,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.orange),
-                        elevation: MaterialStateProperty.all(0),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20))
+                      obscureText: true,
+                      onChanged: signUpStore.setPass2,
+                    );
+                  }),
+                  Observer(builder: (_) {
+                    return Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 12),
+                      height: 40,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) {
+                            if(states.contains(MaterialState.disabled)) return Colors.grey;
+                            return Colors.orange;
+                          }),
+                          elevation: MaterialStateProperty.all(0),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                            )
                           )
-                        )
+                        ),
+                        child: signUpStore.loading ? SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ) :
+                          Text('Entrar', style: TextStyle(color: Colors.white)),
+                        onPressed: signUpStore.signUpPressed,
                       ),
-                      child: Text('Entrar', style: TextStyle(color: Colors.white)),
-                      onPressed: () {
-
-                      },
-                    ),
-                  ),
+                    );
+                  }),
                   Divider(color: Colors.black),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
