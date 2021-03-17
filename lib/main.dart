@@ -4,6 +4,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:xlo_mobx/config/config.dart';
 import 'package:xlo_mobx/screens/base/base_screen.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
+import 'package:xlo_mobx/stores/user_manager_store.dart';
 
 void main() async {
 
@@ -15,6 +16,7 @@ void main() async {
 
 void setupLocations() {
   GetIt.I.registerSingleton(PageStore());
+  GetIt.I.registerSingleton(UserManagerStore());
 }
 
 Future<void> initializeParse() async {
