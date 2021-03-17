@@ -83,6 +83,21 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
+  final _$errorAtom = Atom(name: '_LoginStore.error');
+
+  @override
+  String get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(String value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
   final _$_loginAsyncAction = AsyncAction('_LoginStore._login');
 
   @override
@@ -120,6 +135,7 @@ mixin _$LoginStore on _LoginStore, Store {
 email: ${email},
 pass1: ${pass1},
 loading: ${loading},
+error: ${error},
 emailValid: ${emailValid},
 pass1Valid: ${pass1Valid},
 isFormValid: ${isFormValid},

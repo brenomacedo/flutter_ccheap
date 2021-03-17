@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/components/error_box/error_box.dart';
 import 'package:xlo_mobx/screens/signup/signup_screen.dart';
 import 'package:xlo_mobx/stores/login_store.dart';
 
@@ -32,6 +33,12 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text('Acessar com o e-mail:', textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: Colors.green[800])),
+                  Observer(builder: (_) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: ErrorBox(message: loginStore.error)
+                    );
+                  }),
                   Padding(
                     padding: EdgeInsets.only(left: 3, bottom: 4, top: 8),
                     child: Text('E-mail', style: TextStyle(
