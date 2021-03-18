@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
+import 'package:xlo_mobx/screens/create/components/images_field.dart';
 
 class CreateScreen extends StatelessWidget {
 
@@ -22,6 +23,7 @@ class CreateScreen extends StatelessWidget {
       ),
       drawer: CustomDrawer(),
       body: Card(
+        clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))
         ),
@@ -29,6 +31,7 @@ class CreateScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            ImagesField(),
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Título*',
