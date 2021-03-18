@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xlo_mobx/screens/create/components/image_source_dialog.dart';
 
 class ImagesField extends StatelessWidget {
   @override
@@ -16,9 +17,9 @@ class ImagesField extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if(Platform.isAndroid) {
-                  showModalBottomSheet(context: context, builder: null);
+                  showModalBottomSheet(context: context, builder: (_) => ImageSourceDialog());
                 } else {
-                  showCupertinoModalPopup(context: context, builder: null);
+                  showCupertinoModalPopup(context: context, builder: (_) => ImageSourceDialog());
                 }
               },
               child: CircleAvatar(
