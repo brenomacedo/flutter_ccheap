@@ -7,6 +7,6 @@ class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
 
-  ObservableList<File> images = ObservableList<File>();
+  ObservableList images = ObservableList();
 
 }
