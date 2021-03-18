@@ -30,7 +30,35 @@ class CategoryScreen extends StatelessWidget {
                 return Center(child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.purple)
                 ));
-              return Container();              
+              final categories = showAll ? categoryStore.allCategoryList : categoryStore.categoryList;
+
+              return ListView.separated(
+                itemCount: categories.length,
+                separatorBuilder: (_, __) {
+                  return Divider(
+                    height: 0.1,
+                    color: Colors.grey
+                  );
+                },
+                itemBuilder: (_, index) {
+                  final category = categories[index];
+
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      height: 50,
+                      color: category.id == selected?.id ? Colors.purple.withAlpha(50) : null,
+                      child: Text(category.description, style: TextStyle(
+                        color: Colors.grey[700],
+                        fontWeight: category.id == selected?.id ? FontWeight.bold : null
+                      )),
+                      alignment: Alignment.center,
+                    ),
+                  );
+                },
+              );
             },
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
