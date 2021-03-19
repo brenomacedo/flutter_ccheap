@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/create/components/category_field.dart';
+import 'package:xlo_mobx/screens/create/components/cep_field.dart';
 import 'package:xlo_mobx/screens/create/components/images_field.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 
@@ -52,6 +53,7 @@ class CreateScreen extends StatelessWidget {
               maxLines: null,
             ),
             CategoryField(createStore),
+            CepField(),
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Preço*',
