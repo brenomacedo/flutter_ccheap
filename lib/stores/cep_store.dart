@@ -19,13 +19,13 @@ abstract class _CepStore with Store {
   }
 
   @observable
-  String cep;
+  String cep = '';
 
   @action
   void setCep(String value) => cep = value;
 
   @computed
-  String get clearCep => cep.replaceAll('[^0-9]', '');
+  String get clearCep => cep.replaceAll(RegExp('[^0-9]'), '');
 
   @observable
   Address address;
@@ -40,7 +40,7 @@ abstract class _CepStore with Store {
   Future<void> _searchCep() async {
     loading = true;
     try {
-      address = CEPRepository().getAddressFromApi(clearCep);
+      address = await CEPRepository().getAddressFromApi(clearCep);
       error = null;
     } catch(e) {
       error = e;
