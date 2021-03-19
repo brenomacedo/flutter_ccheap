@@ -33,6 +33,7 @@ dependencies:
   brasil_fields: ^1.1.1
   image_picker: any
   image_cropper: ^1.4.0
+  dio: ^3.0.10
 
 
 dev_dependencies:

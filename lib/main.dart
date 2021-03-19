@@ -13,6 +13,7 @@ void main() async {
   await initializeParse();
   setupLocations();
   runApp(MyApp());
+
 }
 
 void setupLocations() {
