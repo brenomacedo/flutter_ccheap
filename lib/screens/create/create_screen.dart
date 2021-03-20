@@ -88,16 +88,21 @@ class CreateScreen extends StatelessWidget {
                 HidePhoneField(createStore),
                 SizedBox(
                   height: 50,
-                  child: ElevatedButton(onPressed: () {},
-                  child: Text('Enviar', style: TextStyle(color: Colors.white, fontSize: 18)),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith((states) {
-                        if(states.contains(MaterialState.disabled))
-                          return Colors.orange.withAlpha(120);
-                        return Colors.orange;
-                      }),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap
-                  ))
+                  child: Observer(builder: (_) {
+                    return GestureDetector(
+                      child: ElevatedButton(onPressed: createStore.sendPressed,
+                        child: Text('Enviar', style: TextStyle(color: Colors.white, fontSize: 18)),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) {
+                            if(states.contains(MaterialState.disabled))
+                              return Colors.orange.withAlpha(120);
+                            return Colors.orange;
+                          }),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap
+                      )),
+                      onTap: createStore.invalidSendPressed,
+                    );
+                  },)
                 )
               ],
             ),

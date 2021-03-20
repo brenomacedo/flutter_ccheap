@@ -45,7 +45,7 @@ class CategoryScreen extends StatelessWidget {
 
                   return InkWell(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(category);
                     },
                     child: Container(
                       height: 50,

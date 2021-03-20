@@ -12,7 +12,7 @@ abstract class _CreateStore with Store {
 
   @computed
   bool get imagesValid => images.isNotEmpty;
-  String get imagesError => imagesValid ? null : 'Selecione ao menos uma imagem';
+  String get imagesError => (!showErrors || imagesValid) ? null : 'Selecione ao menos uma imagem';
 
   @observable
   String title = '';
@@ -24,7 +24,7 @@ abstract class _CreateStore with Store {
   bool get titleValid => title.length > 6;
 
   String get titleError {
-    if(titleValid) return null;
+    if(!showErrors || titleValid) return null;
     if(title.isEmpty) return 'Campo obrigat´orio';
     return 'Campo muito curto!';
   }
@@ -38,7 +38,7 @@ abstract class _CreateStore with Store {
   @computed
   bool get descriptionValid => description.length >= 10;
   String get descriptionError {
-    if(descriptionValid) return null;
+    if(!showErrors || descriptionValid) return null;
     if(description.isEmpty) return 'Campo obrigat´orio!';
     return 'Descrição muito curta!';
   }
@@ -51,7 +51,7 @@ abstract class _CreateStore with Store {
 
   @computed
   bool get categoryValid => category != null;
-  String get categoryError => categoryValid ? null : 'Campo obrigatório!';
+  String get categoryError => (!showErrors || categoryValid) ? null : 'Campo obrigatório!';
 
   @observable
   bool hidePhone = false;
@@ -64,7 +64,7 @@ abstract class _CreateStore with Store {
   @computed
   Address get address => cepStore.address;
   bool get addressValid => address != null;
-  String get addressError => addressValid ? null : 'Campo obrigatório';
+  String get addressError => (!showErrors || addressValid) ? null : 'Campo obrigatório';
 
   @observable
   String priceText = '';
@@ -80,9 +80,26 @@ abstract class _CreateStore with Store {
   }
   bool get priceValid => price != null && price <= 9999999;
   String get priceError {
-    if(priceValid) return null;
+    if(!showErrors || priceValid) return null;
     if(priceText.isEmpty) return 'Campo obrigatório!';
     return 'Preço inválido';
+  }
+
+  @computed
+  get formValid => imagesValid && titleValid && descriptionValid
+    && categoryValid && addressValid && priceValid;
+
+  @computed
+  Function get sendPressed => formValid ? _send : null;
+
+  @observable
+  bool showErrors = false;
+
+  @action
+  void invalidSendPressed() => showErrors = true;
+
+  void _send() {
+
   }
 
 }
