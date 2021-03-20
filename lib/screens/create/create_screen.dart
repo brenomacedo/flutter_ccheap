@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
+import 'package:xlo_mobx/components/error_box/error_box.dart';
 import 'package:xlo_mobx/screens/create/components/category_field.dart';
 import 'package:xlo_mobx/screens/create/components/cep_field.dart';
 import 'package:xlo_mobx/screens/create/components/hide_phone_field.dart';
@@ -38,74 +39,92 @@ class CreateScreen extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(16))
             ),
             margin: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ImagesField(createStore),
-                Observer(builder: (_) {
-                  return TextFormField(
-                    onChanged: createStore.setTitle,
-                    decoration: InputDecoration(
-                      labelText: 'Título*',
-                      labelStyle: labelStyle,
-                      contentPadding: contentPadding,
-                      errorText: createStore.titleError
-                    ),
-                  );
-                }),
-                Observer(builder: (_) {
-                  return TextFormField(
-                    onChanged: createStore.setDescription,
-                    decoration: InputDecoration(
-                      labelText: 'Descrição*',
-                      labelStyle: labelStyle,
-                      contentPadding: contentPadding,
-                      errorText: createStore.descriptionError
-                    ),
-                    maxLines: null,
-                  );
-                }),
-                CategoryField(createStore),
-                CepField(createStore),
-                Observer(builder: (_) {
-                  return TextFormField(
-                    onChanged: createStore.setPrice,
-                    decoration: InputDecoration(
-                      labelText: 'Preço*',
-                      labelStyle: labelStyle,
-                      contentPadding: contentPadding,
-                      prefixText: 'R\$',
-                      errorText: createStore.priceError
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      RealInputFormatter(centavos: true)
-                    ],
-                  );
-                }),
-                HidePhoneField(createStore),
-                SizedBox(
-                  height: 50,
-                  child: Observer(builder: (_) {
-                    return GestureDetector(
-                      child: ElevatedButton(onPressed: createStore.sendPressed,
-                        child: Text('Enviar', style: TextStyle(color: Colors.white, fontSize: 18)),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith((states) {
-                            if(states.contains(MaterialState.disabled))
-                              return Colors.orange.withAlpha(120);
-                            return Colors.orange;
-                          }),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap
+            child: Observer(builder: (_) {
+              if(createStore.loading)
+                return Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Text('Salvando anúncio', style: TextStyle(
+                        fontSize: 18, color: Colors.purple
                       )),
-                      onTap: createStore.invalidSendPressed,
+                      SizedBox(height: 16),
+                      CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.purple))
+                    ],
+                  ),
+                );
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ImagesField(createStore),
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      onChanged: createStore.setTitle,
+                      decoration: InputDecoration(
+                        labelText: 'Título*',
+                        labelStyle: labelStyle,
+                        contentPadding: contentPadding,
+                        errorText: createStore.titleError
+                      ),
                     );
-                  },)
-                )
-              ],
-            ),
+                  }),
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      onChanged: createStore.setDescription,
+                      decoration: InputDecoration(
+                        labelText: 'Descrição*',
+                        labelStyle: labelStyle,
+                        contentPadding: contentPadding,
+                        errorText: createStore.descriptionError
+                      ),
+                      maxLines: null,
+                    );
+                  }),
+                  CategoryField(createStore),
+                  CepField(createStore),
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      onChanged: createStore.setPrice,
+                      decoration: InputDecoration(
+                        labelText: 'Preço*',
+                        labelStyle: labelStyle,
+                        contentPadding: contentPadding,
+                        prefixText: 'R\$',
+                        errorText: createStore.priceError
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        RealInputFormatter(centavos: true)
+                      ],
+                    );
+                  }),
+                  HidePhoneField(createStore),
+                  Observer(builder: (_) {
+                    return ErrorBox(message: createStore.error);
+                  }),
+                  SizedBox(
+                    height: 50,
+                    child: Observer(builder: (_) {
+                      return GestureDetector(
+                        child: ElevatedButton(onPressed: createStore.sendPressed,
+                          child: Text('Enviar', style: TextStyle(color: Colors.white, fontSize: 18)),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith((states) {
+                              if(states.contains(MaterialState.disabled))
+                                return Colors.orange.withAlpha(120);
+                              return Colors.orange;
+                            }),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap
+                        )),
+                        onTap: createStore.invalidSendPressed,
+                      );
+                    },)
+                  )
+                ],
+              );
+            })
           ),
         ),
       )
