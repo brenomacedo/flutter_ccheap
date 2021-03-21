@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/home/components/search_dialog.dart';
+import 'package:xlo_mobx/screens/home/components/top_bar.dart';
 import 'package:xlo_mobx/stores/home_store.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -52,6 +53,11 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => homeStore.setSearch(''),
             );
           })
+        ],
+      ),
+      body: Column(
+        children: [
+          TopBar()
         ],
       ),
     ));
