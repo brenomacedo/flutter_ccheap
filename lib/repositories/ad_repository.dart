@@ -11,12 +11,13 @@ import 'package:xlo_mobx/stores/filter_store.dart';
 
 class AdRepository {
 
-  Future<List<Ad>> getHomeAdList({ FilterStore filter, String search, Category category }) async {
+  Future<List<Ad>> getHomeAdList({ FilterStore filter, String search, Category category, int page }) async {
     final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyAdTable));
 
     queryBuilder
       ..setLimit(20)
       ..whereEqualTo(keyAdStatus, AdStatus.ACTIVE.index)
+      ..setAmountToSkip(page * 20)
       ..includeObject([keyAdOwner, keyAdCategory]);
 
     if(search != null && search.trim().isNotEmpty) {
