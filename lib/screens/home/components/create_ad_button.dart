@@ -70,6 +70,7 @@ class _CreateAdButtonState extends State<CreateAdButton> with SingleTickerProvid
               child: Row(
                 children: [
                   Icon(Icons.camera_alt),
+                  SizedBox(width: 10),
                   Text('Anunciar agora',
                   textAlign: TextAlign.center,
                   style: TextStyle(
