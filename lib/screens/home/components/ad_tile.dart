@@ -12,7 +12,7 @@ class AdTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 135,
+      height: 1350,
       margin: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
       child: Card(
         clipBehavior: Clip.antiAlias,
