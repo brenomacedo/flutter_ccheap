@@ -1,9 +1,14 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:xlo_mobx/stores/edit_account_store.dart';
 
 class EditAccountScreen extends StatelessWidget {
+
+  final editAccStore = EditAccountStore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,43 +37,53 @@ class EditAccountScreen extends StatelessWidget {
                         cornerRadius: 20,
                         activeBgColor: Colors.purple,
                         inactiveFgColor: Colors.white,
-                        onToggle: (value) {
-
-                        },
+                        onToggle: editAccStore.setUserType,
                         initialLabelIndex: 0,
                       );
                     },
                   ),
                   SizedBox(height: 8),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                      labelText: 'Nome*'
-                    ),
-                  ),
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        labelText: 'Nome*',
+                        errorText: editAccStore.nameError
+                      ),
+                      onChanged: editAccStore.setName,
+                    );
+                  }),
                   SizedBox(height: 8),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                      labelText: 'Telefone*'
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      TelefoneInputFormatter()
-                    ],
-                    keyboardType: TextInputType.number,
-                  ),
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        labelText: 'Telefone*',
+                        errorText: editAccStore.phoneError
+                      ),
+                      onChanged: editAccStore.setPhone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TelefoneInputFormatter()
+                      ],
+                      keyboardType: TextInputType.number,
+                    );
+                  }),
                   SizedBox(height: 8),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                      labelText: 'Nova senha*'
-                    ),
-                    obscureText: true,
-                  ),
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        labelText: 'Nova senha*',
+                        errorText: editAccStore.passError
+                      ),
+                      onChanged: editAccStore.setPass1,
+                      obscureText: true,
+                    );
+                  }),
                   SizedBox(height: 8),
                   TextFormField(
                     decoration: InputDecoration(
@@ -76,6 +91,7 @@ class EditAccountScreen extends StatelessWidget {
                       isDense: true,
                       labelText: 'Confirmar nova senha*'
                     ),
+                    onChanged: editAccStore.setPass2,
                     obscureText: true,
                   ),
                   SizedBox(height: 8),
@@ -97,18 +113,20 @@ class EditAccountScreen extends StatelessWidget {
                   SizedBox(height: 8),
                   SizedBox(
                     height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith((states) {
-                          return Colors.red;
-                        }),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                        )
-                      ),
-                      child: Text('Sair', style: TextStyle(color: Colors.white)),
-                    ),
+                    child: Observer(builder: (_) {
+                      return ElevatedButton(
+                        onPressed: editAccStore.isFormValid ? () {} : null,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) {
+                            return Colors.red;
+                          }),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                          )
+                        ),
+                        child: Text('Sair', style: TextStyle(color: Colors.white)),
+                      );
+                    })
                   )
                 ],
               ),
