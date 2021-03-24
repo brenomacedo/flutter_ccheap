@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:xlo_mobx/components/empty_card.dart';
 import 'package:xlo_mobx/screens/my_ads/components/active_tile.dart';
 import 'package:xlo_mobx/screens/my_ads/components/pending_tile.dart';
 import 'package:xlo_mobx/screens/my_ads/components/sold_tile.dart';
@@ -43,44 +44,54 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
           ],
         ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          Observer(builder: (_) {
-            if(myAdsStore.activeAds.isEmpty)
-              return Container();
-            
-            return ListView.builder(
-              itemCount: myAdsStore.activeAds.length,
-              itemBuilder: (_, index) {
-                return ActiveTile(myAdsStore.activeAds[index]);
-              },
-            );
-          }),
-          Observer(builder: (_) {
-            if(myAdsStore.pendingAds.isEmpty)
-              return Container();
-            
-            return ListView.builder(
-              itemCount: myAdsStore.pendingAds.length,
-              itemBuilder: (_, index) {
-                return PendingTile(myAdsStore.pendingAds[index]);
-              },
-            );
-          }),
-          Observer(builder: (_) {
-            if(myAdsStore.soldAds.isEmpty)
-              return Container();
-            
-            return ListView.builder(
-              itemCount: myAdsStore.soldAds.length,
-              itemBuilder: (_, index) {
-                return SoldTile(myAdsStore.soldAds[index]);
-              },
-            );
-          }),
-        ],
-      ),
+      body: Observer(
+        builder: (_) {
+
+          if(myAdsStore.loading)
+            return Center(child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.white)
+            ));
+
+          return TabBarView(
+            controller: tabController,
+            children: [
+              Observer(builder: (_) {
+                if(myAdsStore.activeAds.isEmpty)
+                  return EmptyCard('Você não possui nenhum anúncio ativo');
+                
+                return ListView.builder(
+                  itemCount: myAdsStore.activeAds.length,
+                  itemBuilder: (_, index) {
+                    return ActiveTile(myAdsStore.activeAds[index], myAdsStore);
+                  },
+                );
+              }),
+              Observer(builder: (_) {
+                if(myAdsStore.pendingAds.isEmpty)
+                  return EmptyCard('Você não possui nenhum anúncio vendido');
+                
+                return ListView.builder(
+                  itemCount: myAdsStore.pendingAds.length,
+                  itemBuilder: (_, index) {
+                    return PendingTile(myAdsStore.pendingAds[index]);
+                  },
+                );
+              }),
+              Observer(builder: (_) {
+                if(myAdsStore.soldAds.isEmpty)
+                  return EmptyCard('Você não possui nenhum anúncio vendido');
+                
+                return ListView.builder(
+                  itemCount: myAdsStore.soldAds.length,
+                  itemBuilder: (_, index) {
+                    return SoldTile(myAdsStore.soldAds[index], myAdsStore);
+                  },
+                );
+              }),
+            ],
+          );
+        },
+      )
     );
   }
 }

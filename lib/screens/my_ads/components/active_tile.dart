@@ -4,11 +4,13 @@ import 'package:xlo_mobx/models/ad.dart';
 import 'package:xlo_mobx/helpers/extensions.dart';
 import 'package:xlo_mobx/screens/ad/ad_screen.dart';
 import 'package:xlo_mobx/screens/create/create_screen.dart';
+import 'package:xlo_mobx/stores/my_ads_store.dart';
 
 class ActiveTile extends StatelessWidget {
 
-  ActiveTile(this.ad);
+  ActiveTile(this.ad, this.myAdsStore);
 
+  final MyAdsStore myAdsStore;
   final Ad ad;
 
   final List<MenuChoice> choices = [
@@ -79,8 +81,10 @@ class ActiveTile extends StatelessWidget {
                     editAd(context);
                     break;
                   case 1:
+                    soldAd(context);
                     break;
                   case 2:
+                    deleteAd(context);
                     break;
                 }
               })
@@ -92,9 +96,43 @@ class ActiveTile extends StatelessWidget {
   }
 
   Future<void> editAd(BuildContext context) async {
-    Navigator.of(context).push(
+    final bool success = await Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => CreateScreen(ad: ad))
     );
+
+    if(success != null && success) myAdsStore.refresh();
+  }
+
+  void soldAd(BuildContext context) {
+    showDialog(context: context, builder: (_) => AlertDialog(
+      title: Text('Vendido'),
+      content: Text('Confirmar a venda de ${ad.title}?'),
+      actions: [
+        TextButton(onPressed: () {
+          Navigator.of(context).pop();
+        }, child: Text('Não')),
+        TextButton(onPressed: () {
+          Navigator.of(context).pop();
+          myAdsStore.soldAd(ad);
+        }, child: Text('Sim', style: TextStyle(color: Colors.red)))
+      ],
+    ));
+  }
+
+  void deleteAd(BuildContext context) {
+    showDialog(context: context, builder: (_) => AlertDialog(
+      title: Text('Excluir'),
+      content: Text('Confirmar a exclusão de ${ad.title}?'),
+      actions: [
+        TextButton(onPressed: () {
+          Navigator.of(context).pop();
+        }, child: Text('Não')),
+        TextButton(onPressed: () {
+          Navigator.of(context).pop();
+          myAdsStore.deleteAd(ad);
+        }, child: Text('Sim', style: TextStyle(color: Colors.red)))
+      ],
+    ));
   }
 }
 

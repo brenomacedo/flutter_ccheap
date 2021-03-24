@@ -21,15 +21,39 @@ abstract class _MyAdsStore with Store {
   List<Ad> get pendingAds => allAds.where((ad) => ad.status == AdStatus.PENDING).toList();
   List<Ad> get soldAds => allAds.where((ad) => ad.status == AdStatus.SOLD).toList();
 
+  @action
   Future<void> _getMyAds() async {
     final user = GetIt.I<UserManagerStore>().user;
     AdRepository().getMyAds(user);
 
+    loading = true;
+    print('setei true');
     try {
       allAds = await AdRepository().getMyAds(user);
+      loading = false;
+      print('setei false');
     } catch(e) {
 
     }
+  }
+
+  @observable
+  bool loading = false;
+
+  void refresh() => _getMyAds();
+
+  @action
+  Future<void> soldAd(Ad ad) async {
+    loading = true;
+    await AdRepository().sold(ad);
+    refresh();
+  }
+
+  @action
+  Future<void> deleteAd(Ad ad) async {
+    loading = true;
+    await AdRepository().delete(ad);
+    refresh();
   }
 
 }
