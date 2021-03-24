@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
-import 'package:xlo_mobx/components/empty_card.dart';
 import 'package:xlo_mobx/screens/home/components/ad_tile.dart';
 import 'package:xlo_mobx/screens/home/components/create_ad_button.dart';
 import 'package:xlo_mobx/screens/home/components/search_dialog.dart';
@@ -35,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Observer(builder: (_) {
           if(homeStore.search.isEmpty)
-            return EmptyCard('Nenhum anúncio encontrado');
+            return Container();
           
 
           return GestureDetector(

@@ -13,6 +13,7 @@ class EmptyCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       margin: EdgeInsets.all(32),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
             flex: 4,
@@ -20,6 +21,7 @@ class EmptyCard extends StatelessWidget {
           ),
           Divider(color: Colors.black),
           Expanded(
+            flex: 1,
             child: Padding(
               padding: EdgeInsets.all(18),
               child: Column(

@@ -28,18 +28,23 @@ class EditAccountScreen extends StatelessWidget {
                 children: [
                   LayoutBuilder(
                     builder: (_, constraints) {
-                      return ToggleSwitch(
-                        minWidth: constraints.biggest.width / 2.01,
-                        labels: [
-                          'Particular',
-                          'Profissional'
-                        ],
-                        cornerRadius: 20,
-                        activeBgColor: Colors.purple,
-                        inactiveFgColor: Colors.white,
-                        onToggle: editAccStore.setUserType,
-                        initialLabelIndex: 0,
-                      );
+                      return Observer(builder: (_) {
+                        return IgnorePointer(
+                          ignoring: editAccStore.loading,
+                          child: ToggleSwitch(
+                            minWidth: constraints.biggest.width / 2.01,
+                            labels: [
+                              'Particular',
+                              'Profissional'
+                            ],
+                            cornerRadius: 20,
+                            activeBgColor: Colors.purple,
+                            inactiveFgColor: Colors.white,
+                            onToggle: editAccStore.setUserType,
+                            initialLabelIndex: editAccStore.userType.index,
+                          ),
+                        );
+                      });
                     },
                   ),
                   SizedBox(height: 8),
@@ -51,7 +56,9 @@ class EditAccountScreen extends StatelessWidget {
                         labelText: 'Nome*',
                         errorText: editAccStore.nameError
                       ),
+                      initialValue: editAccStore.name,
                       onChanged: editAccStore.setName,
+                      enabled: !editAccStore.loading,
                     );
                   }),
                   SizedBox(height: 8),
@@ -63,7 +70,9 @@ class EditAccountScreen extends StatelessWidget {
                         labelText: 'Telefone*',
                         errorText: editAccStore.phoneError
                       ),
+                      initialValue: editAccStore.phone,
                       onChanged: editAccStore.setPhone,
+                      enabled: !editAccStore.loading,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         TelefoneInputFormatter()
@@ -82,17 +91,46 @@ class EditAccountScreen extends StatelessWidget {
                       ),
                       onChanged: editAccStore.setPass1,
                       obscureText: true,
+                      enabled: !editAccStore.loading,
                     );
                   }),
                   SizedBox(height: 8),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                      labelText: 'Confirmar nova senha*'
-                    ),
-                    onChanged: editAccStore.setPass2,
-                    obscureText: true,
+                  Observer(builder: (_) {
+                    return TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        labelText: 'Confirmar nova senha*'
+                      ),
+                      onChanged: editAccStore.setPass2,
+                      obscureText: true,
+                      enabled: !editAccStore.loading,
+                    );
+                  }),
+                  SizedBox(height: 8),
+                  SizedBox(
+                    height: 40,
+                    child: Observer(builder: (_) {
+                      return ElevatedButton(
+                        onPressed: editAccStore.savePressed,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) {
+                            if(states.contains(MaterialState.disabled)) {
+                              return Colors.orange.withAlpha(100);
+                            }
+                            return Colors.orange;
+                          }),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                          )
+                        ),
+                        child: editAccStore.loading
+                          ? Center(child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                          ))
+                          : Text('Salvar', style: TextStyle(color: Colors.white)),
+                      );
+                    })
                   ),
                   SizedBox(height: 8),
                   SizedBox(
@@ -101,32 +139,14 @@ class EditAccountScreen extends StatelessWidget {
                       onPressed: () {},
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith((states) {
-                          return Colors.orange;
+                          return Colors.red;
                         }),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                         )
                       ),
-                      child: Text('Salvar', style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  SizedBox(
-                    height: 40,
-                    child: Observer(builder: (_) {
-                      return ElevatedButton(
-                        onPressed: editAccStore.isFormValid ? () {} : null,
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith((states) {
-                            return Colors.red;
-                          }),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-                          )
-                        ),
-                        child: Text('Sair', style: TextStyle(color: Colors.white)),
-                      );
-                    })
+                      child: Text('Sair', style: TextStyle(color: Colors.white)),
+                    )
                   )
                 ],
               ),
