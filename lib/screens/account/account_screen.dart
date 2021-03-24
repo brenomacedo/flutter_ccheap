@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:xlo_mobx/components/custom_drawer/custom_drawer.dart';
 import 'package:xlo_mobx/screens/edit_account/edit_account_screen.dart';
@@ -31,22 +32,24 @@ class AccountScreen extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.center,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(userManager.user.name,
-                          style: TextStyle(
-                            color: Colors.purple,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900
-                          )),
-                          Text(userManager.user.email,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[700]
-                          ))
-                        ],
-                      ),
+                      child: Observer(builder: (_) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(userManager.user.name,
+                            style: TextStyle(
+                              color: Colors.purple,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900
+                            )),
+                            Text(userManager.user.email,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[700]
+                            ))
+                          ],
+                        );
+                      })
                     ),
                     Align(
                       alignment: Alignment.topRight,
