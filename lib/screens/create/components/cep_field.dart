@@ -25,6 +25,7 @@ class CepField extends StatelessWidget {
               FilteringTextInputFormatter.digitsOnly,
               CepInputFormatter()
             ],
+            initialValue: createStore.cepStore.cep,
             decoration: InputDecoration(
               labelText: 'CEP *',
               labelStyle: TextStyle(

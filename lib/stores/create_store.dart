@@ -6,11 +6,27 @@ import 'package:xlo_mobx/models/category.dart';
 import 'package:xlo_mobx/repositories/ad_repository.dart';
 import 'package:xlo_mobx/stores/cep_store.dart';
 import 'package:xlo_mobx/stores/user_manager_store.dart';
+import 'package:xlo_mobx/helpers/extensions.dart';
 part 'create_store.g.dart';
 
 class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
+
+  _CreateStore(Ad ad) {
+    title = ad.title;
+    description = ad.description;
+    images = ad.images.asObservable();
+    category = ad.category;
+    priceText = ad.price.toStringAsFixed(2);
+    hidePhone = ad.hidePhone;
+
+    if(ad.address != null)
+      cepStore = CepStore(ad.address.cep);
+    else
+      cepStore = CepStore(null);
+    
+  }
 
   ObservableList images = ObservableList();
 
@@ -63,7 +79,7 @@ abstract class _CreateStore with Store {
   @action
   void setHidePhone(bool value) => hidePhone = value;
 
-  CepStore cepStore = CepStore();
+  CepStore cepStore;
 
   @computed
   Address get address => cepStore.address;

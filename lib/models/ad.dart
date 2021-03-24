@@ -37,7 +37,7 @@ class Ad {
 
   String id;
 
-  List images;
+  List images = [];
 
   String title;
   String description;
@@ -46,7 +46,7 @@ class Ad {
   Address address;
 
   num price;
-  bool hidePhone;
+  bool hidePhone = false;
 
   AdStatus status = AdStatus.PENDING;
   DateTime created;
