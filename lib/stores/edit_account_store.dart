@@ -98,4 +98,8 @@ abstract class _EditAccountStore with Store {
   @computed
   VoidCallback get savePressed => (isFormValid && !loading) ? _save : null;
 
+  void logout() {
+    userManagerStore.logout();
+  }
+
 }
