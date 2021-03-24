@@ -13,7 +13,9 @@ class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
 
-  _CreateStore(Ad ad) {
+  final Ad ad;
+
+  _CreateStore(this.ad) {
     title = ad.title;
     description = ad.description;
     images = ad.images.asObservable();
@@ -129,7 +131,7 @@ abstract class _CreateStore with Store {
 
   @action
   Future<void> _send() async {
-    final ad = Ad();
+    
     ad.title = title;
     ad.description = description;
     ad.category = category;

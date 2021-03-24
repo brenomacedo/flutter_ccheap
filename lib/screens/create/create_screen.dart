@@ -11,6 +11,7 @@ import 'package:xlo_mobx/screens/create/components/category_field.dart';
 import 'package:xlo_mobx/screens/create/components/cep_field.dart';
 import 'package:xlo_mobx/screens/create/components/hide_phone_field.dart';
 import 'package:xlo_mobx/screens/create/components/images_field.dart';
+import 'package:xlo_mobx/screens/my_ads/my_ads_screen.dart';
 import 'package:xlo_mobx/stores/create_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
 
@@ -37,7 +38,15 @@ class _CreateScreenState extends State<CreateScreen> {
     super.initState();
 
     when((_) => createStore.savedAd, () {
-      GetIt.I<PageStore>().setPage(0);
+      if(editing)
+        Navigator.of(context).pop(true);
+      else {
+        GetIt.I<PageStore>().setPage(0);
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => MyAdsScreen(initialPage: 1))
+        );
+      }
+        
     });
   }
 

@@ -6,6 +6,11 @@ import 'package:xlo_mobx/screens/my_ads/components/sold_tile.dart';
 import 'package:xlo_mobx/stores/my_ads_store.dart';
 
 class MyAdsScreen extends StatefulWidget {
+
+  MyAdsScreen({this.initialPage = 0});
+
+  final int initialPage;
+
   @override
   _MyAdsScreenState createState() => _MyAdsScreenState();
 }
@@ -19,7 +24,7 @@ class _MyAdsScreenState extends State<MyAdsScreen> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 3, vsync: this, initialIndex: widget.initialPage);
   }
 
   @override
