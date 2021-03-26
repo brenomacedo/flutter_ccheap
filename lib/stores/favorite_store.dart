@@ -13,10 +13,20 @@ abstract class _FavoriteStore with Store {
 
   Future<void> toggleFavorite(Ad ad) async {
     try {
-      await FavoriteRepository().save(ad: ad, user: userManagerStore.user);
+      if(favoriteList.any((a) => a.id == ad.id)) {
+        favoriteList.removeWhere((a) => a.id == ad.id);
+        await FavoriteRepository().delete(ad: ad, user: userManagerStore.user);
+      } else {
+        favoriteList.add(ad);
+        await FavoriteRepository().save(ad: ad, user: userManagerStore.user);
+      }
     } catch(e) {
       print(e);
     }
   }
+
+  ObservableList<Ad> favoriteList = ObservableList<Ad>();
+
+
 
 }
