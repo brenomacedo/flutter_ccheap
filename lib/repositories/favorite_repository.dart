@@ -39,6 +39,21 @@ class FavoriteRepository {
       return Future.error('Falha ao deletar favorito!');
     }
 
-  } 
+  }
 
+  Future<List<Ad>> getFavorites(User user) async {
+    final queryBuilder = QueryBuilder(ParseObject(keyFavoritesTable));
+    queryBuilder
+      ..whereEqualTo(keyFavoritesOwner, user.id)
+      ..includeObject([keyFavoritesAd, 'ad.owner']);
+    
+
+    final response = await queryBuilder.query();
+
+    if(response.success && response.results != null)
+      return response.results.map((p) => Ad.fromParse(p.get(keyFavoritesAd))).toList();
+    if(response.success && response.results == null) return [];
+    return Future.error(ParseErrors.getDescription(response.error.code));
+  }
+ 
 }

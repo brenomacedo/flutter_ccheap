@@ -9,6 +9,13 @@ class FavoriteStore = _FavoriteStore with _$FavoriteStore;
 
 abstract class _FavoriteStore with Store {
 
+  _FavoriteStore() {
+    reaction((_) => userManagerStore.isLoggedIn, (_) {
+      _getFavoriteList();
+    });
+
+  }
+
   final userManagerStore = GetIt.I<UserManagerStore>();
 
   Future<void> toggleFavorite(Ad ad) async {
@@ -27,6 +34,16 @@ abstract class _FavoriteStore with Store {
 
   ObservableList<Ad> favoriteList = ObservableList<Ad>();
 
-
+  @action
+  Future<void> _getFavoriteList() async {
+    try {
+      favoriteList.clear();
+      final favorites = await FavoriteRepository()
+        .getFavorites(userManagerStore.user);
+      favoriteList.addAll(favorites);
+    } catch(e) {
+      print(e);
+    }
+  }
 
 }
