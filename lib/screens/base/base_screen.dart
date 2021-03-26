@@ -5,6 +5,8 @@ import 'package:xlo_mobx/screens/account/account_screen.dart';
 import 'package:xlo_mobx/screens/create/create_screen.dart';
 import 'package:xlo_mobx/screens/favorites/favorites_screen.dart';
 import 'package:xlo_mobx/screens/home/home_screen.dart';
+import 'package:xlo_mobx/screens/offline/offline_screen.dart';
+import 'package:xlo_mobx/stores/connectivity_store.dart';
 import 'package:xlo_mobx/stores/page_store.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -18,6 +20,14 @@ class _BaseScreenState extends State<BaseScreen> {
   void initState() {
     super.initState();
 
+    autorun((_) {
+      if(!connectStore.connected) {
+        Future.delayed(Duration(milliseconds: 50)).then((_) {
+          showDialog(context: context, builder: (_) => OfflineScreen());
+        });
+      }
+    });
+
     reaction((_) => pageStore.page, (page) {
       _page.jumpToPage(page);
     });
@@ -26,6 +36,7 @@ class _BaseScreenState extends State<BaseScreen> {
   final _page = PageController();
 
   final PageStore pageStore = GetIt.I<PageStore>();
+  final ConnectivityStore connectStore = GetIt.I<ConnectivityStore>();
 
   @override
   Widget build(BuildContext context) {

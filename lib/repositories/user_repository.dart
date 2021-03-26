@@ -78,7 +78,7 @@ class UserRepository {
         await parseUser.logout();
         final loginResponse = await ParseUser(user.email, user.password, user.email).login();
 
-        if(!response.success)
+        if(!loginResponse.success)
           Future.error(ParseErrors.getDescription(response.error.code));
       }
     }
