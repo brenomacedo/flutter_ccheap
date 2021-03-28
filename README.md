@@ -1,16 +1,24 @@
-# xlo_mobx
+# CCheap - Um aplicativo para anúnciar eletrônicos, carros, imóveis e outros bens que estão à venda!
 
-A new Flutter project.
+## Tecnologias usadas:
 
-## Getting Started
+- ### Flutter
+- ### Parse Server
+- ### MobX
 
-This project is a starting point for a Flutter application.
+# Algumas Screenshots:
 
-A few resources to get you started if this is your first Flutter project:
+<p align="center">
+    <img width="48%" src="https://i.imgur.com/TukMbqN.png">
+    <img width="48%" src="https://i.imgur.com/xdAfzlW.png">
+</p>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<p align="center">
+    <img width="48%" src="https://i.imgur.com/D0UdTY6.png">
+    <img width="48%" src="https://i.imgur.com/HFTxFtf.png">
+</p>
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p align="center">
+    <img width="48%" src="https://i.imgur.com/g6frIX2.png">
+    <img width="48%" src="https://i.imgur.com/rXhgmLe.png">
+</p>

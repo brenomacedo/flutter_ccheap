@@ -24,6 +24,7 @@ abstract class _HomeStore with Store {
           search: search,
           category: category
         );
+        adList.clear();
         addNewAds(newAds);
         setError(null);
       } catch(e) {
